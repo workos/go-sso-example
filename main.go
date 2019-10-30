@@ -16,11 +16,13 @@ func main() {
 		APIKey      string
 		ProjectID   string
 		RedirectURI string
+		Domain      string
 	}
 	flag.StringVar(&conf.Addr, "addr", ":3042", "The server addr.")
 	flag.StringVar(&conf.APIKey, "api-key", "", "The WorkOS API key.")
 	flag.StringVar(&conf.ProjectID, "project-id", "", "The WorkOS project id.")
 	flag.StringVar(&conf.RedirectURI, "redirect-uri", "", "The redirect uri.")
+	flag.StringVar(&conf.Domain, "domain", "", "The domain used to register a WorkOS SSO connection.")
 	flag.Parse()
 
 	log.Printf("launching sso demo with configuration: %+v", conf)
@@ -30,7 +32,7 @@ func main() {
 
 	// Handle login:
 	http.Handle("/login", sso.Login(sso.GetAuthorizationURLOptions{
-		Domain: "maxence.workos.dev",
+		Domain: conf.Domain,
 	}))
 
 	// Handle login redirect:

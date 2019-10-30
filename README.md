@@ -18,7 +18,8 @@ go get -u github.com/workos-inc/go-sso-demo
     go-sso-demo \
         -api-key <workos_api_key> \
         -project-id <workos_project_id> \
-        -redirect-uri <redirect_uri>
+        -redirect-uri <redirect_uri> \
+        -domain <domain>
     ```
 
 *(\*) For local environment, you will need to provide a redirect uri that points to your machine. You can use [Ngrok](https://ngrok.com) to achieve this.*
