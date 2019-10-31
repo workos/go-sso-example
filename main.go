@@ -51,15 +51,16 @@ func main() {
 			return
 		}
 
+		// Display user profile:
 		b, err := json.MarshalIndent(profile, "", "    ")
 		if err != nil {
 			log.Printf("encoding profile failed: %s", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(err.Error()))
 		}
+		w.Write(b)
 
 		log.Printf("user is logged with profile: %s", b)
-		w.Write(b)
 	})
 
 	if err := http.ListenAndServe(conf.Addr, nil); err != nil {
