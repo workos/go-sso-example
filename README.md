@@ -41,12 +41,6 @@ An example Flask application demonstrating how to use the [WorkOS Go SDK](https:
    $ go run .
    ```
 
-   You'll know the server is running when you see no errors in the CLI, and output similar to the following is displayed:
-
-   ```bash
-launching sso demo with configuration: {Addr::3042 APIKey: {your api key} ProjectID: {your project id} RedirectURI: {your redirect URI} Domain: {your domain} }
-   ```
-
    Navigate to `localhost:3042` in your web browser. You should see a "Login" button. If you click this link, you'll be redirected to an HTTP `404` page because we haven't set up SSO yet!
 
    You can stop the local server for now by entering `CTRL + c` on the command line.
