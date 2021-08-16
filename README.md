@@ -1,5 +1,5 @@
 # go-sso-example
-An example Flask application demonstrating how to use the [WorkOS Python SDK](https://github.com/workos-inc/workos-python) to authenticate users via SSO.
+An example Flask application demonstrating how to use the [WorkOS Go SDK](https://github.com/workos-inc/workos-go) to authenticate users via SSO.
 
 ## Prerequisites
 - Go
