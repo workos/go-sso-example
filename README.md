@@ -1,10 +1,10 @@
 # go-sso-example
-An example Flask application demonstrating how to use the [WorkOS Go SDK](https://github.com/workos-inc/workos-go) to authenticate users via SSO.
+An example Go application demonstrating how to use the [WorkOS Go SDK](https://github.com/workos-inc/workos-go) to authenticate users via SSO.
 
 ## Prerequisites
 - Go
 
-## Flask Project Setup
+## Go Project Setup
 
 1. In your CLI, navigate to the directory into which you want to clone this git repo.
    ```bash
