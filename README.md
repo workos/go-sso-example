@@ -32,6 +32,7 @@ An example Go application demonstrating how to use the [WorkOS Go SDK](https://g
 4. Obtain and make note of the following values. In the next step, these will be set as environment variables.
    - Your [WorkOS API key](https://dashboard.workos.com/api-keys)
    - Your [SSO-specific, WorkOS Project ID](https://dashboard.workos.com/configuration)
+   - Your [Redirect URI](https://workos.com/docs/sso/guide/set-redirect-uri)
 
 
 5. Edit the environmental variables in `main.go`.
