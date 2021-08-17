@@ -18,6 +18,7 @@ func main() {
 		RedirectURI string
 		Domain      string
 	}
+
 	flag.StringVar(&conf.Addr, "addr", ":3042", "The server addr.")
 	flag.StringVar(&conf.APIKey, "api-key", "", "The WorkOS API key.")
 	flag.StringVar(&conf.ProjectID, "project-id", "", "The WorkOS project id.")
@@ -27,12 +28,16 @@ func main() {
 
 	log.Printf("launching sso demo with configuration: %+v", conf)
 
+	http.Handle("/", http.FileServer(http.Dir("./static")))
+  
+	
 	// Configure the WorkOS SSO SDK:
-	sso.Configure(conf.APIKey, conf.ProjectID, conf.RedirectURI)
+	sso.Configure(conf.APIKey, conf.ProjectID)
 
 	// Handle login:
 	http.Handle("/login", sso.Login(sso.GetAuthorizationURLOptions{
 		Domain: conf.Domain,
+		RedirectURI: conf.RedirectURI,
 	}))
 
 	// Handle login redirect:
@@ -40,7 +45,7 @@ func main() {
 		log.Printf("callback is called with %s", r.URL)
 
 		// Retrieving user profile:
-		profile, err := sso.GetProfile(context.Background(), sso.GetProfileOptions{
+		profile, err := sso.GetProfileAndToken(context.Background(), sso.GetProfileAndTokenOptions{
 			Code: r.URL.Query().Get("code"),
 		})
 		if err != nil {
@@ -66,4 +71,7 @@ func main() {
 	if err := http.ListenAndServe(conf.Addr, nil); err != nil {
 		log.Panic(err)
 	}
+
+	
 }
+
