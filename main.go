@@ -14,14 +14,14 @@ func main() {
 	var conf struct {
 		Addr        string
 		APIKey      string
-		ProjectID   string
+		ClientID   string
 		RedirectURI string
 		Domain      string
 	}
 
 	flag.StringVar(&conf.Addr, "addr", ":3042", "The server addr.")
 	flag.StringVar(&conf.APIKey, "api-key", "", "The WorkOS API key.")
-	flag.StringVar(&conf.ProjectID, "project-id", "", "The WorkOS project id.")
+	flag.StringVar(&conf.ClientID, "client-id", "", "The WorkOS project id.")
 	flag.StringVar(&conf.RedirectURI, "redirect-uri", "", "The redirect uri.")
 	flag.StringVar(&conf.Domain, "domain", "", "The domain used to register a WorkOS SSO connection.")
 	flag.Parse()
@@ -32,10 +32,11 @@ func main() {
   
 	
 	// Configure the WorkOS SSO SDK:
-	sso.Configure(conf.APIKey, conf.ProjectID)
+	sso.Configure(conf.APIKey, conf.ClientID)
 
-	// Handle login:
+	// Handle login
 	http.Handle("/login", sso.Login(sso.GetAuthorizationURLOptions{
+		//Instead of domain, you can now use connection ID to associate a user to the appropriate connection.
 		Domain: conf.Domain,
 		RedirectURI: conf.RedirectURI,
 	}))
