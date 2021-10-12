@@ -29,7 +29,7 @@ func main() {
 	flag.StringVar(&conf.APIKey, "api-key", "sk_test_a2V5XzAxRkExMkM3TTNSTldFNUNKSEFNUUVZQ1pTLDJtb3drUExOTk9vT3dDc1NDRTZnRUVVQ28", "The WorkOS API key.")
 	flag.StringVar(&conf.ClientID, "client-id", "client_01FA12C7QV793K318T2G1V3E7X", "The WorkOS project id.")
 	flag.StringVar(&conf.RedirectURI, "redirect-uri", "http://localhost:3042/callback", "The redirect uri.")
-	flag.StringVar(&conf.Domain, "domain", "workos.com", "The domain used to register a WorkOS SSO connection.")
+	flag.StringVar(&conf.Domain, "domain", "gmail.com", "The domain used to register a WorkOS SSO connection.")
 	flag.StringVar(&conf.Provider, "provider", "MicrosoftOAuth", "The OAuth provider used for the SSO connection.")
 	flag.Parse()
 
@@ -43,7 +43,7 @@ func main() {
 	// Handle login
 	http.Handle("/login", sso.Login(sso.GetAuthorizationURLOptions{
 		//Instead of domain, you can now use connection ID to associate a user to the appropriate connection.
-		Provider:    "MicrosoftOAuth",
+		Domain:      conf.Domain,
 		RedirectURI: conf.RedirectURI,
 	}))
 
