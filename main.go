@@ -7,11 +7,18 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	"github.com/workos-inc/workos-go/pkg/sso"
 )
 
 func main() {
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file")
+	}
+
 	var conf struct {
 		Addr        string
 		APIKey      string
@@ -22,13 +29,15 @@ func main() {
 	}
 
 	type Profile struct {
-		ProfileData string
+		First_name  string
+		Last_name   string
+		Raw_profile string
 	}
 
 	flag.StringVar(&conf.Addr, "addr", ":3042", "The server addr.")
-	flag.StringVar(&conf.APIKey, "api-key", "sk_test_a2V5XzAxRkExMkM3TTNSTldFNUNKSEFNUUVZQ1pTLDJtb3drUExOTk9vT3dDc1NDRTZnRUVVQ28", "The WorkOS API key.")
-	flag.StringVar(&conf.ClientID, "client-id", "client_01FA12C7QV793K318T2G1V3E7X", "The WorkOS project id.")
-	flag.StringVar(&conf.RedirectURI, "redirect-uri", "http://localhost:3042/callback", "The redirect uri.")
+	flag.StringVar(&conf.APIKey, "api-key", os.Getenv("WORKOS_API_KEY"), "The WorkOS API key.")
+	flag.StringVar(&conf.ClientID, "client-id", os.Getenv("WORKOS_CLIENT_ID"), "The WorkOS client id.")
+	flag.StringVar(&conf.RedirectURI, "redirect-uri", os.Getenv("WORKOS_REDIRECT_URI"), "The redirect uri.")
 	flag.StringVar(&conf.Domain, "domain", "gmail.com", "The domain used to register a WorkOS SSO connection.")
 	flag.StringVar(&conf.Provider, "provider", "MicrosoftOAuth", "The OAuth provider used for the SSO connection.")
 	flag.Parse()
@@ -66,21 +75,34 @@ func main() {
 
 		// Display user profile:
 		b, err := json.MarshalIndent(profile, "", "    ")
-		print(b)
 		if err != nil {
 			log.Printf("encoding profile failed: %s", err)
 			w.WriteHeader(http.StatusInternalServerError)
 			w.Write([]byte(err.Error()))
 		}
 
-		// Convert the profile to a string
-		stringB := string(b)
-		data := Profile{
-			ProfileData: stringB,
+		// define variable to hold data
+		var data map[string]interface{}
+
+		// decode the json and set pointer to the data variable
+		if err := json.Unmarshal(b, &data); err != nil {
+			panic(err)
 		}
 
+		// Unnest the profile
+		first_name := data["profile"].(map[string]interface{})["first_name"]
+		last_name := data["profile"].(map[string]interface{})["last_name"]
+
+		// Convert to strings
+		first_name_string := first_name.(string)
+		last_name_string := last_name.(string)
+		raw_profile := string(b)
+
+		// Create instance of Profile struct including profile values
+		this_profile := Profile{first_name_string, last_name_string, raw_profile}
+
 		// Render the template
-		tmpl.Execute(w, data)
+		tmpl.Execute(w, this_profile)
 	})
 
 	if err := http.ListenAndServe(conf.Addr, nil); err != nil {

@@ -35,7 +35,10 @@ An example Go application demonstrating how to use the [WorkOS Go SDK](https://g
    - Your [Redirect URI](https://workos.com/docs/sso/guide/set-redirect-uri)
 
 
-5. Edit the environmental variables in `main.go`.
+5. Create a new file called ".env" in the root of the project and add the following variables, replacing the xxx with the values from step 4: 
+   - WORKOS_API_KEY=xxx
+   - WORKOS_CLIENT_ID=xxx
+   - WORKOS_REDIRECT_URI=xxx
 
 6. The final setup step is to start the server.
    ```bash
