@@ -38,8 +38,8 @@ func main() {
 	flag.StringVar(&conf.APIKey, "api-key", os.Getenv("WORKOS_API_KEY"), "The WorkOS API key.")
 	flag.StringVar(&conf.ClientID, "client-id", os.Getenv("WORKOS_CLIENT_ID"), "The WorkOS client id.")
 	flag.StringVar(&conf.RedirectURI, "redirect-uri", os.Getenv("WORKOS_REDIRECT_URI"), "The redirect uri.")
-	flag.StringVar(&conf.Domain, "domain", "gmail.com", "The domain used to register a WorkOS SSO connection.")
-	flag.StringVar(&conf.Provider, "provider", "MicrosoftOAuth", "The OAuth provider used for the SSO connection.")
+	flag.StringVar(&conf.Domain, "domain", os.Getenv("WORKOS_DOMAIN"), "The domain used to register a WorkOS SSO connection.")
+	flag.StringVar(&conf.Provider, "provider", "", "The OAuth provider used for the SSO connection.")
 	flag.Parse()
 
 	log.Printf("launching sso demo with configuration: %+v", conf)
